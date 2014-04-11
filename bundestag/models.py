@@ -1,3 +1,8 @@
 from django.db import models
+from sources.models import Source
 
-# Create your models here.
+class TextFieldSingleLine(models.TextField):
+	pass
+
+class Plenarprotokoll(Source):
+	pass
