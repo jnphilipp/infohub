@@ -1,2 +1,5 @@
 *.pyc
-venv
+infohub/settings.ini
+media/*
+static/*
+venv/*
