@@ -5,4 +5,5 @@ class TextFieldSingleLine(models.TextField):
 	pass
 
 class Plenarprotokoll(Source):
-	pass
+	class Meta:
+		verbose_name_plural = 'Plenarprotokolle'
