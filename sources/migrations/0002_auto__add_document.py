@@ -17,8 +17,7 @@ class Migration(SchemaMigration):
             ('url', self.gf('sources.models.TextFieldSingleLine')(unique=True)),
             ('meta', self.gf('django.db.models.fields.TextField')()),
             ('content', self.gf('django.db.models.fields.TextField')()),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('source', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sources.Source'])),
         ))
         db.send_create_signal('sources', ['Document'])
 
@@ -29,22 +28,25 @@ class Migration(SchemaMigration):
 
 
     models = {
-        'contenttypes.contenttype': {
-            'Meta': {'db_table': "'django_content_type'", 'object_name': 'ContentType', 'unique_together': "(('app_label', 'model'),)", 'ordering': "('name',)"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
         'sources.document': {
             'Meta': {'object_name': 'Document'},
             'content': ('django.db.models.fields.TextField', [], {}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now_add': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'meta': ('django.db.models.fields.TextField', [], {}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '4096'}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sources.Source']"}),
+            'updated_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now': 'True'}),
+            'url': ('sources.models.TextFieldSingleLine', [], {'unique': 'True'})
+        },
+        'sources.source': {
+            'Meta': {'object_name': 'Source'},
+            'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now_add': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '4096'}),
+            'title': ('sources.models.TextFieldSingleLine', [], {'null': 'True', 'blank': 'True'}),
+            'update_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now': 'True'}),
             'url': ('sources.models.TextFieldSingleLine', [], {'unique': 'True'})
         }

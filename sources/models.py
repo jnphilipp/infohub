@@ -19,7 +19,9 @@ class Source(models.Model):
 	title = TextFieldSingleLine(blank=True, null=True)
 	update_time = models.DateTimeField(default=datetime.now)
 	alive = models.BooleanField(default=True)
-	documents = GenericRelation('Document')
+
+	def parse(self):
+		pass
 
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -29,9 +31,6 @@ class Source(models.Model):
 	def __str__(self):
 		return self.title if self.title else self.url
 
-	class Meta:
-		abstract = True
-
 class Document(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
@@ -40,9 +39,7 @@ class Document(models.Model):
 	url = TextFieldSingleLine(unique=True)
 	meta = models.TextField()
 	content = models.TextField()
-	content_type = models.ForeignKey(ContentType)
-	object_id = models.PositiveIntegerField()
-	content_object = GenericForeignKey()
+	source = models.ForeignKey(Source)
 
 	def save(self, *args, **kwargs):
 		if not self.id:
