@@ -34,6 +34,8 @@ ADMINS = tuple(config.items('admins'))
 
 # Application definition
 INSTALLED_APPS = (
+	'suit',
+	'suit_redactor',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
