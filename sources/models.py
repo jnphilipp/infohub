@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.generic import GenericForeignKey,GenericRelation
 from django.db import models
 from django.template.defaultfilters import slugify
 from south.modelsinspector import add_introspection_rules
@@ -19,6 +19,7 @@ class Source(models.Model):
 	title = TextFieldSingleLine(blank=True, null=True)
 	update_time = models.DateTimeField(default=datetime.now)
 	alive = models.BooleanField(default=True)
+	documents = GenericRelation('Document')
 
 	def save(self, *args, **kwargs):
 		if not self.id:
