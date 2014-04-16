@@ -43,9 +43,7 @@ INSTALLED_APPS = (
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'south',
-	'sources',
 	'feeds',
-	'bundestag',
 )
 
 MIDDLEWARE_CLASSES = (
