@@ -6,18 +6,14 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
+    depends_on = (
+        ("feeds", "0001_initial"),
+    )
 
     def forwards(self, orm):
         # Adding model 'Plenarprotokoll'
         db.create_table('bundestag_plenarprotokoll', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_at', self.gf('django.db.models.fields.DateTimeField')(blank=True, auto_now=True)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=4096)),
-            ('url', self.gf('sources.models.TextFieldSingleLine')(unique=True)),
-            ('title', self.gf('sources.models.TextFieldSingleLine')(blank=True, null=True)),
-            ('update_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('alive', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('feed_ptr', self.gf('django.db.models.fields.related.OneToOneField')(unique=True, primary_key=True, to=orm['feeds.Feed'])),
         ))
         db.send_create_signal('bundestag', ['Plenarprotokoll'])
 
@@ -29,14 +25,22 @@ class Migration(SchemaMigration):
 
     models = {
         'bundestag.plenarprotokoll': {
-            'Meta': {'object_name': 'Plenarprotokoll'},
+            'Meta': {'object_name': 'Plenarprotokoll', '_ormbases': ['feeds.Feed']},
+            'feed_ptr': ('django.db.models.fields.related.OneToOneField', [], {'unique': 'True', 'primary_key': 'True', 'to': "orm['feeds.Feed']"})
+        },
+        'feeds.feed': {
+            'Meta': {'object_name': 'Feed', '_ormbases': ['sources.Source']},
+            'source_ptr': ('django.db.models.fields.related.OneToOneField', [], {'unique': 'True', 'primary_key': 'True', 'to': "orm['sources.Source']"})
+        },
+        'sources.source': {
+            'Meta': {'object_name': 'Source'},
             'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now_add': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '4096'}),
-            'title': ('sources.models.TextFieldSingleLine', [], {'blank': 'True', 'null': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '4096', 'unique': 'True'}),
+            'title': ('sources.models.TextFieldSingleLine', [], {'null': 'True', 'blank': 'True'}),
             'update_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'updated_at': ('django.db.models.fields.DateTimeField', [], {'blank': 'True', 'auto_now': 'True'}),
+            'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'url': ('sources.models.TextFieldSingleLine', [], {'unique': 'True'})
         }
     }

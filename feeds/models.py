@@ -7,4 +7,5 @@ class TextFieldSingleLine(models.TextField):
 	pass
 
 class Feed(Source):
-	pass
+	def parse(self):
+		print('hi')
