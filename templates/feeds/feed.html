@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="feeds">
+	<article class="feed">
+		<h1>feed: {{ feed }}</h1>
+		<ul>
+			<li>url: {{ feed.url }}</li>
+			<li>alive: {{ feed.alive|yesno }}</li>
+		</ul>
+		<h3>documents: {{ feed.document_set.count }}</h3>
+		<ul>
+			{% for document in feed.document_set.all %}
+				<li>{{ document }} - {{ document.updated_at }}</li>
+			{% endfor %}
+		</ul>
+	</article>
+</section>
+{% endblock %}

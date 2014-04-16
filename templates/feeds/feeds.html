@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="feeds">
+	<ul>
+		{% if feeds %}
+			{% for feed in feeds %}
+				<li><a href="{% url 'feed' feed.slug %}">{{ feed }}</a></li>
+			{% endfor %}
+		{% else %}
+			<li>no feeds available</li>
+		{% endif %}
+	</ul>
+</section>
+{% endblock %}

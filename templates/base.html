@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<!--<link rel="shortcut icon" href="{% static "images/icon.png" %}" />-->
+		<link rel="stylesheet" href="{% static "css/style.css" %}" />
+		<title>infohub</title>
+	</head>
+	<body>
+		<header>
+			<nav>
+				<ul>
+					<li><a href="{% url 'feeds' %}">feeds</a></li>
+					<li><a href="{% url 'admin:index' %}">admin</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div id="content">
+			{% block content %}{% endblock %}
+		</div>
+	</body>
+</html>
