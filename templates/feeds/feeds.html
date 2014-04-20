@@ -2,14 +2,23 @@
 
 {% block content %}
 <section class="feeds">
-	<ul>
+	<table>
 		{% if feeds %}
+			<tr>
+				<th>feed</th>
+				<th>number of documents</th>
+				<th>last updated</th>
+			</tr>
 			{% for feed in feeds %}
-				<li><a href="{% url 'feed' feed.slug %}">{{ feed }}</a></li>
+				<tr class="{% cycle 'row1' 'row2' %}">
+					<td><a href="{% url 'feed' feed.slug %}">{{ feed }}</a></td>
+					<td style="text-align: center;">{{ feed.document_set.count }}</td>
+					<td>{{ feed.updated_at|date:'l, jS F Y H:i:s'|lower }}</td>
+				</tr>
 			{% endfor %}
 		{% else %}
-			<li>no feeds available</li>
+			<tr><th>no feeds available</th></tr>
 		{% endif %}
-	</ul>
+	</table>
 </section>
 {% endblock %}

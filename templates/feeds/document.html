@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="documents">
+	<article class="document">
+		<div>
+			<h1>{{ document }}</h1>
+			<ul>
+				<li>feed: <a href="{% url 'feed' document.feed.slug %}">{{ document.feed }}</a></li>
+				<li>url: <a href="{{ document.url }}" target="_blank">{{ document.url }}</a></li>
+				<li>meta: {{ document.meta }}</li>
+				<li>content: {% autoescape off %}{{ document.content }}{% endautoescape %}</li>
+			</ul>
+		</div>
+	</article>
+</section>
+{% endblock %}

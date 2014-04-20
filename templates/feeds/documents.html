@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="documents">
+	<table>
+		{% if documents %}
+			<tr>
+				<th>document</th>
+				<th>feed</th>
+				<th>created</th>
+			</tr>
+			{% for document in documents %}
+				<tr class="{% cycle 'row1' 'row2' %}">
+					<td><a href="{% url 'document' document.slug %}">{{ document }}</a></td>
+					<td><a href="{% url 'feed' document.feed.slug %}">{{ document.feed }}</a></td>
+					<td>{{ document.created_at|date:'l, jS F Y H:i:s'|lower }}</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+			<tr><th>no documents available</th></tr>
+		{% endif %}
+	</table>
+</section>
+{% endblock %}

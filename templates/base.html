@@ -1,9 +1,10 @@
-{% load staticfiles %}
+{% load staticfiles feeds_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
+		<meta charset="utf-8"/>
+		<meta http-equiv="refresh" content="600"/>
 		<!--<link rel="shortcut icon" href="{% static "images/icon.png" %}" />-->
 		<link rel="stylesheet" href="{% static "css/style.css" %}" />
 		<title>infohub</title>
@@ -12,10 +13,17 @@
 		<header>
 			<nav>
 				<ul>
-					<li><a href="{% url 'feeds' %}">feeds</a></li>
+					{% url 'feeds' as feeds_url %}
+					{% url 'home' as home_url %}
+					<li{% if request.path == home_url or request.path|startswith:feeds_url %} class="selected"{% endif %}><div></div><a href="{% url 'feeds' %}">feeds</a></li>
+					{% url 'documents' as documents_url %}
+					<li{% if request.path|startswith:documents_url %} class="selected"{% endif %}><div></div><a href="{% url 'documents' %}">documents</a></li>
+					{% url 'reports' as reports_url %}
+					<li{% if request.path|startswith:reports_url %} class="selected"{% endif %}><div></div><a href="{% url 'reports' %}">reports</a></li>
 					<li><a href="{% url 'admin:index' %}">admin</a></li>
 				</ul>
 			</nav>
+			<p style="font-size: 8pt; position: absolute; right: 1em; top: 0.5em;"><i class="icon-time"></i> {% now "l, jS F Y H:i:s" %}</p>
 		</header>
 		<div id="content">
 			{% block content %}{% endblock %}

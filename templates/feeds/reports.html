@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load feeds_tags %}
+
+{% block content %}
+<section class="reports">
+	<table>
+		{% if reports %}
+			<tr>
+				<th>date</th>
+				<th>number of new documents</th>
+			</tr>
+			{% for report in reports %}
+				<tr class="{% cycle 'row1' 'row2' %}">
+					<td><a href="{% url 'report' report.slug %}">{{ report.created_at|date:'l, jS F Y H:i:s'|lower }}</a></td>
+					<td style="text-align: center;">{{ report|num_new_entries }}</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+			<tr><th>no reports available</th></tr>
+		{% endif %}
+	</table>
+</section>
+{% endblock %}

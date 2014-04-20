@@ -3,17 +3,28 @@
 {% block content %}
 <section class="feeds">
 	<article class="feed">
-		<h1>feed: {{ feed }}</h1>
-		<ul>
-			<li>url: {{ feed.url }}</li>
-			<li>alive: {{ feed.alive|yesno }}</li>
-		</ul>
-		<h3>documents: {{ feed.document_set.count }}</h3>
-		<ul>
-			{% for document in feed.document_set.all %}
-				<li>{{ document }} - {{ document.updated_at }}</li>
-			{% endfor %}
-		</ul>
+		<div>
+			<h1>{{ feed }}</h1>
+			<ul>
+				<li>url: <a href="{{ feed.url }}" target="_blank">{{ feed.url }}</a></li>
+				<li>alive: {{ feed.alive|yesno }}</li>
+			</ul>
+		</div>
+		<div style="margin-top: 5em;">
+			<h3>documents: {{ feed.document_set.count }}</h3>
+			<table>
+				<tr>
+					<th>document</th>
+					<th>created</th>
+				</tr>
+				{% for document in feed.document_set.all %}
+					<tr class="{% cycle 'row1' 'row2' %}">
+						<td><a href="{% url 'document' document.slug %}">{{ document.title }}</a></td>
+						<td>{{ document.created_at|date:'l, jS F Y H:i:s'|lower }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
 	</article>
 </section>
 {% endblock %}

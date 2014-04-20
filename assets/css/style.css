@@ -1,16 +1,11 @@
-@font-face {font-family: 'Audiowide';
-	src:
-		local('Audiowide'),
-		local('Audiowide Regular'),
-		url('Audiowide-Regular.ttf');
-}
-
 header, footer, nav, article, aside {display: block;}
 body {background: #FFFFFF;
-	font-family: 'Audiowide', monospace;
+	font-family: monospace;
 	font-size: 10pt;
 	font-weight: normal;
-	color: black;}
+	color: black;
+	padding: 0;
+	margin: 0;}
 
 a {font-weight: bold;
 	color: inherit;
@@ -26,12 +21,73 @@ a:active {position: relative;
 
 nav {margin-left: auto;
 	margin-right: auto;
-	margin-top: 1em;
+	margin-top: 0em;
 	margin-bottom: 2em;
 	text-align: center;
-	z-index: 1;
 	font-size: 13pt;}
 
-nav ul {list-style: none;}
-nav ul li {display: inline;
-	margin-left: 1em;}
+nav ul {list-style: none;
+	margin: 0;}
+
+nav ul li {display: inline-block;
+	width: 150px;
+	line-height: 44px;
+	text-align: center;}
+
+nav ul li div {display: block;
+	height: 7px;}
+
+nav ul li.selected div {background: #0276FD;}
+
+.documents,
+.feeds,
+.reports {display: block;
+	margin-left: auto;
+	margin-right: auto;}
+
+.documents table {margin-left: 10px;
+	margin-right: 10px;
+	border-collapse: collapse;}
+
+.feeds table,
+.reports table {margin: 0 auto;
+	border-collapse: collapse;}
+
+.documents table th,
+.feeds table th,
+.reports table th {padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 6px;
+	padding-bottom: 8px;
+	border-bottom: 3px solid black;}
+
+.documents table td,
+.feeds table td,
+.reports table td {padding-top: 8px;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-bottom: 1px dashed #d5d5d5;}
+
+.document,
+.feed,
+.report {display: block;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;}
+
+.report h1 {text-align: center;}
+
+.document ul {margin-top: 3em;}
+.document ul li {margin:0 15px 15px 0;}
+
+.row1 {background: #e5e5e5;}
+.row2 {background: #ffffff;}
+
+.row1:hover,
+.row2:hover {background: #cccccc;}
+
+
+[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("../images/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;margin-top:1px;}
+
+.icon-time {background-position: -48px -24px;}
