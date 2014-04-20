@@ -1,5 +1,9 @@
 Django==1.6.2
 South==0.8.4
+django-common==0.1.51
+django-common-helpers==0.6.0
+django-cron==0.3.3
+django-fsm==2.0.1
 django-suit==0.2.7
 django-suit-redactor==0.0.2
 feedparser==5.1.3
