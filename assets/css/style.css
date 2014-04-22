@@ -7,11 +7,11 @@ body {background: #FFFFFF;
 	padding: 0;
 	margin: 0;}
 
-a {font-weight: bold;
-	color: inherit;
+a {font-weight: normal;
+	color: #0276FD;
 	text-decoration: none;}
 
-a:hover {color: #0276FD;
+a:hover {color: #02b5fd;
 	font-weight: bold;
 	text-decoration: none;}
 
@@ -34,10 +34,11 @@ nav ul li {display: inline-block;
 	line-height: 44px;
 	text-align: center;}
 
+nav ul li a {font-weight: bold;}
 nav ul li div {display: block;
 	height: 7px;}
 
-nav ul li.selected div {background: #0276FD;}
+nav ul li.selected div {background: #02b5fd;}
 
 .documents,
 .feeds,

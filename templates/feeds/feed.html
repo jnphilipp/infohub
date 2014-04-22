@@ -8,6 +8,7 @@
 			<ul>
 				<li>url: <a href="{{ feed.url }}" target="_blank">{{ feed.url }}</a></li>
 				<li>alive: {{ feed.alive|yesno }}</li>
+				<li>parser: {{ feed.parser }}</li>
 			</ul>
 		</div>
 		<div style="margin-top: 5em;">
@@ -15,11 +16,13 @@
 			<table>
 				<tr>
 					<th>document</th>
+					<th>state</th>
 					<th>created</th>
 				</tr>
 				{% for document in feed.document_set.all %}
 					<tr class="{% cycle 'row1' 'row2' %}">
 						<td><a href="{% url 'document' document.slug %}">{{ document.title }}</a></td>
+						<td>{{ document.state }}</td>
 						<td>{{ document.created_at|date:'l, jS F Y H:i:s'|lower }}</td>
 					</tr>
 				{% endfor %}
