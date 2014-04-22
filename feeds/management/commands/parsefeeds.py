@@ -15,9 +15,10 @@ class Command(BaseCommand):
 			old = feed.document_set.count()
 			try:
 				feed.parse()
-				new_entries[feed.slug()] = feed.document_set.count() - old
+				feed.save()
+				new_entries[feed.slug] = feed.document_set.count() - old
 			except Exception as e:
-				new_entries[feed.slug()] = str(e).strip()
+				new_entries[feed.slug] = str(e).strip()
 
 		report = Report.objects.create(text=json.dumps(new_entries))
 		self.stdout.write('Report: (%s)\n %s' % (report.created_at, report.text))

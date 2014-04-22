@@ -6,6 +6,7 @@ from django_fsm import FSMField, transition
 from south.modelsinspector import add_introspection_rules
 
 import feedparser
+import importlib
 import re
 
 add_introspection_rules([], ["^feeds\.models\.TextFieldSingleLine"])
@@ -25,7 +26,7 @@ class Parser(models.Model):
 
 	def save(self, *args, **kwargs):
 		if not self.id:
-			self.slug = slugify(self.name)
+			self.slug = slugify(self.name).replace('-', '_')
 		super(Parser, self).save(*args, **kwargs)
 
 	def __str__(self):
@@ -95,9 +96,18 @@ class Document(models.Model):
 
 	state = FSMField(default='new', protected=True)
 
-	@transition(field=state, source='new', target='text')
-	def parse_text(self):
-		pass
+	@transition(field=state, source='new', target='parsed')
+	def parse(self):
+		if self.feed.parser.slug == 'default':
+			raise Exception('Parser not yet supported.')
+
+		module = importlib.import_module('feeds.parsers')
+		c = getattr(module, self.feed.parser.slug)
+		parser = c()
+		parser.get_text(self)
+
+		if not self.text:
+			raise Exception('Could not parse text.')
 
 	def get_absolute_url(self):
 		return reverse('document', args=[str(self.slug)])

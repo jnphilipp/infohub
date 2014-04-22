@@ -36,7 +36,7 @@ class FeedAdmin(admin.ModelAdmin):
 	def show_document_count(self, inst):
 		return inst.document_count
 
-	list_display = ('url', 'title', 'updated_at', 'show_document_count', 'show_link')
+	list_display = ('url', 'title', 'updated_at', 'show_document_count', 'parser', 'show_link')
 	list_filter = ('alive', 'parser')
 	readonly_fields = ('slug',)
 	search_fields = ('url', 'title')
@@ -70,7 +70,7 @@ class ReportAdmin(admin.ModelAdmin):
 	]
 
 class ParserAdmin(admin.ModelAdmin):
-	list_display = ('name',)
+	list_display = ('name', 'slug')
 	list_filter = ()
 	readonly_fields = ('slug',)
 	search_fields = ('name',)
