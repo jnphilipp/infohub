@@ -115,6 +115,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[infohub CronJob]: "
 CRON_CLASSES = (
 	'feeds.crons.ParseFeedsCronJob',
+	'feeds.crons.ProcessDocumentsCronJob',
 	'django_cron.cron.FailedRunsNotificationCronJob',
 )
 

@@ -10,9 +10,9 @@ class ZeitOnlineParser(HTMLParser):
 			return
 
 		s = ''
-		m = re.search(r'<!--start: content-->(.+?)<div[^>]*class="[^"]*articlefooter[^"]*">', text, re.MULTILINE | re.DOTALL)
+		m = re.search(r'<!--start: content-->(.+?)<div[^>]*class="[^"]*articlefooter[^"]*">', text, re.DOTALL | re.MULTILINE)
 		if m:
-			matchs = re.finditer(r'<p>(.+?)</p>', re.sub(r'<div[^>]*class="block infobox"[^>]*><dl>.+</dl></div>', '', m.group(1), 1, re.MULTILINE | re.DOTALL), re.MULTILINE | re.DOTALL)
+			matchs = re.finditer(r'<p>(.+?)</p>', re.sub(r'<div[^>]*class="block infobox"[^>]*><dl>.+</dl></div>', '', m.group(1), 1, re.DOTALL | re.MULTILINE), re.DOTALL | re.MULTILINE)
 			for match in matchs:
 				s += ' ' + super().clean_unescape(re.sub('\s\s+', ' ', re.sub('\n', ' ', match.group(1)))).strip()
 

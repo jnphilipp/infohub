@@ -12,9 +12,9 @@ class SpiegelParser(HTMLParser):
 			return
 
 		s = ''
-		match = re.search(r'(<p>.+</p>).*?(?=<p><i>.+?</i></p>|URL)', text, re.MULTILINE | re.DOTALL)
+		match = re.search(r'(<p>.+</p>).*?(?=<p><i>.+?</i></p>|URL)', text, re.DOTALL | re.MULTILINE)
 		if match:
-			matchs = re.finditer(r'<p>(.+?)</p>', match.group(1), re.MULTILINE | re.DOTALL)
+			matchs = re.finditer(r'<p>(.+?)</p>', match.group(1), re.DOTALL | re.MULTILINE)
 			for m in matchs:
 				end = re.search(r'<p><i>.+?</i></p>', m.group(0))
 				if end:
