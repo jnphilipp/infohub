@@ -80,7 +80,11 @@ nav ul li.selected div {background: #02b5fd;}
 .report h1 {text-align: center;}
 
 .document ul {margin-top: 3em;}
-.document ul li {margin:0 15px 15px 0;}
+.document ul li {margin:0 20px 20px 0;
+	text-align: justify;}
+
+.document ul li.content {margin:0 70px 70px 0;
+	text-align: justify;}
 
 .row1 {background: #e5e5e5;}
 .row2 {background: #ffffff;}

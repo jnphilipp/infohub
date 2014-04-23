@@ -10,8 +10,8 @@
 				<li><b>url:</b> <a href="{{ document.url }}" target="_blank">{{ document.url }}</a></li>
 				<li><b>state:</b> {{ document.state }}</li>
 				<li><b>meta:</b> {{ document.meta }}</li>
-				<li><b>content:</b> {% autoescape off %}{{ document.content }}{% endautoescape %}</li>
-				<li><b>text:</b> {{ document.text }}</li>
+				<li class="content"><b>content:</b> {% autoescape off %}{{ document.content }}{% endautoescape %}</li>
+				<li class="content"><b>text:</b> {{ document.text }}</li>
 			</ul>
 		</div>
 	</article>
