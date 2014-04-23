@@ -1,7 +1,4 @@
-from django.core import management
-from django.core.mail import mail_admins
-from django.core.management import call_command
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from feeds.models import Feed, Report
 
 import json

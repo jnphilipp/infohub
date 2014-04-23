@@ -1,4 +1,4 @@
-from feeds.parsers.base import HTMLParser
+from parsers.parsers.base import HTMLParser
 import re
 import urllib
 

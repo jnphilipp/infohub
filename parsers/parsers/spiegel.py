@@ -1,13 +1,11 @@
-from feeds.parsers.base import HTMLParser
+from parsers.parsers.base import HTMLParser
 import re
 import urllib
 
 class SpiegelParser(HTMLParser):
 	def get_text(self, document):
 		try:
-			text = super().fetch(document.url)
-			print_link = super().get_print_link(text)
-			text = super().fetch('http://www.spiegel.de%s' % print_link)
+			text = super().fetch('http://www.spiegel.de%s' % super().get_print_link(super().fetch(document.url)))
 		except (urllib.error.HTTPError, urllib.error.URLError) as e:
 			return
 

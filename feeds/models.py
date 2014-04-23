@@ -2,38 +2,16 @@ from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
-from django_fsm import FSMField, transition
+from parsers.models import Parser
 from south.modelsinspector import add_introspection_rules
 
 import feedparser
-import importlib
 import re
 
 add_introspection_rules([], ["^feeds\.models\.TextFieldSingleLine"])
 
-def tag_content(tag, content):
-	return '<%s>%s</%s>' % (tag, content, tag)
-
 class TextFieldSingleLine(models.TextField):
 	pass
-
-class Parser(models.Model):
-	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
-
-	slug = models.SlugField(max_length=4096, unique=True)
-	name = TextFieldSingleLine(unique=True)
-
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.slug = slugify(self.name).replace('-', '_')
-		super(Parser, self).save(*args, **kwargs)
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		ordering = ('name',)
 
 class Feed(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -50,6 +28,7 @@ class Feed(models.Model):
 		return reverse('feed', args=[str(self.slug)])
 
 	def parse(self):
+		from documents.models import Document
 		rssfeed = feedparser.parse(self.url)
 		if not self.title and rssfeed.feed.title:
 			self.title = rssfeed.feed.title
@@ -57,8 +36,8 @@ class Feed(models.Model):
 
 		for entry in rssfeed.entries:
 			if not Document.objects.filter(url=entry.link).exists():
-				title = re.sub(r'\s\s+', ' ', entry.title.replace('\n', ''))
-				summary = entry.summary if 'summary' in entry else ''
+				title = re.sub(r'\s\s+', ' ', entry.title.replace('\n', ' '))
+				summary = re.sub(r'\s\s+', ' ', entry.summary.replace('\n', ' ')) if 'summary' in entry else ''
 
 				date = None
 				if 'published' in entry:
@@ -70,7 +49,7 @@ class Feed(models.Model):
 
 				meta = ''
 				if date:
-					meta += tag_content('date', datetime(*date[:6]).isoformat())
+					meta += '<date>%s</date>' % datetime(*date[:6]).isoformat()
 
 				Document.objects.create(url=entry.link, title=title, feed=self, content=summary, meta=meta)
 
@@ -81,47 +60,6 @@ class Feed(models.Model):
 
 	def __str__(self):
 		return self.title if self.title else self.url
-
-class Document(models.Model):
-	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
-
-	slug = models.SlugField(max_length=4096, unique=True)
-	url = TextFieldSingleLine(unique=True)
-	title = TextFieldSingleLine(null=True, blank=True)
-	meta = models.TextField()
-	content = models.TextField()
-	text = models.TextField(null=True, blank=True)
-	feed = models.ForeignKey(Feed)
-
-	state = FSMField(default='new', protected=True)
-
-	@transition(field=state, source='new', target='parsed')
-	def parse(self):
-		if self.feed.parser.slug == 'default':
-			raise Exception('Parser not yet supported.')
-
-		module = importlib.import_module('feeds.parsers')
-		c = getattr(module, self.feed.parser.slug)
-		parser = c()
-		parser.get_text(self)
-
-		if not self.text:
-			raise Exception('Could not parse text.')
-
-	def get_absolute_url(self):
-		return reverse('document', args=[str(self.slug)])
-
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.slug = slugify(self.url)
-		super(Document, self).save(*args, **kwargs)
-
-	def __str__(self):
-		return self.title if self.title else self.url
-
-	class Meta:
-		ordering = ('-created_at',)
 
 class Report(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)

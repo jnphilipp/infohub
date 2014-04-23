@@ -44,7 +44,9 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'south',
 	'django_cron',
+	'parsers',
 	'feeds',
+	'documents',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,7 +117,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[infohub CronJob]: "
 CRON_CLASSES = (
 	'feeds.crons.ParseFeedsCronJob',
-	'feeds.crons.ProcessDocumentsCronJob',
+	'documents.crons.ProcessDocumentsCronJob',
 	'django_cron.cron.FailedRunsNotificationCronJob',
 )
 
@@ -126,6 +128,8 @@ SUIT_CONFIG = {
 		{'label': 'infohub', 'icon':'icon-home', 'url': '/'},
 		'auth',
 		'django_cron',
+		'parsers',
 		'feeds',
+		'documents',
 	),
 }
