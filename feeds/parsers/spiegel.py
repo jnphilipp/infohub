@@ -20,14 +20,14 @@ class SpiegelParser(HTMLParser):
 				if end:
 					continue
 
-				s += ' ' + super().clean_unescape(re.sub('\n', ' ', m.group(1))).strip()
+				s += ' ' + super().clean_unescape(re.sub('\s\s+', ' ', re.sub('\n', ' ', m.group(1)))).strip()
 		else:
 			return
 
 		match = re.search('name="keywords" content="([^"]+)"', text)
 		if match:
 			topics = set(match.group(1).split(', '))
-			topics.remove('')
+			if '' in topics: topics.remove('')
 			document.meta += '<topics>%s</topics>' % ''.join(['<topic>%s</topic>' % topic for topic in topics])
 
 		document.text = s.strip()
