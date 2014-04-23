@@ -9,7 +9,7 @@ class Command(BaseCommand):
 	help = 'Processes the documents.'
 
 	def handle(self, *args, **options):
-		for document in Document.objects.filter(Q(feed__slug='httpwwwspiegeldeschlagzeilenindexrss') | Q(feed__slug='httpnewsfeedzeitdeall') | Q(feed__slug='httpsuchesueddeutschedeoutputrss')).filter(state='new'):
+		for document in Document.objects.filter(Q(feed__slug='httpwwwspiegeldeschlagzeilenindexrss') | Q(feed__slug='httpnewsfeedzeitdeall') | Q(feed__slug='httpsuchesueddeutschedeoutputrss') | Q(feed__parser__slug='die_welt_parser')).filter(state='new'):
 			try:
 				document.parse()
 				document.save()
