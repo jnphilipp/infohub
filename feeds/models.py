@@ -44,7 +44,7 @@ class Feed(models.Model):
 	title = TextFieldSingleLine(blank=True, null=True)
 	alive = models.BooleanField(default=True)
 
-	parser = models.ForeignKey(Parser, default=Parser.objects.get(slug='default'))
+	parser = models.ForeignKey(Parser, null=True, blank=True)
 
 	def get_absolute_url(self):
 		return reverse('feed', args=[str(self.slug)])
