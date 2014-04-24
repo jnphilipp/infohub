@@ -42,6 +42,7 @@ nav ul li.selected div {background: #02b5fd;}
 
 .documents,
 .feeds,
+.statistics,
 .reports {display: block;
 	margin-left: auto;
 	margin-right: auto;}
@@ -51,12 +52,14 @@ nav ul li.selected div {background: #02b5fd;}
 	border-collapse: collapse;}
 
 .feeds table,
-.reports table {margin: 0 auto;
+.reports table,
+.statistics table {margin: 0 auto;
 	border-collapse: collapse;}
 
 .documents table th,
 .feeds table th,
-.reports table th {padding-left: 20px;
+.reports table th,
+.statistics table th {padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 6px;
 	padding-bottom: 8px;
@@ -64,7 +67,8 @@ nav ul li.selected div {background: #02b5fd;}
 
 .documents table td,
 .feeds table td,
-.reports table td {padding-top: 8px;
+.reports table td,
+.statistics table td {padding-top: 8px;
 	padding-bottom: 5px;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -72,6 +76,7 @@ nav ul li.selected div {background: #02b5fd;}
 
 .document,
 .feed,
+.statistics,
 .report {display: block;
 	width: 60%;
 	margin-left: auto;
@@ -79,11 +84,14 @@ nav ul li.selected div {background: #02b5fd;}
 
 .report h1 {text-align: center;}
 
-.document ul {margin-top: 3em;}
-.document ul li {margin:0 20px 20px 0;
+.document ul,
+.statistics ul {margin-top: 3em;}
+.document ul li,
+.statistics ul li {margin:0 20px 20px 0;
 	text-align: justify;}
 
-.document ul li.content {margin:0 100px 100px 0;
+.document ul li.content,
+.statistics ul li.content {margin:0 100px 100px 0;
 	text-align: justify;}
 
 .row1 {background: #e5e5e5;}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load feeds_tags %}
+
+{% block content %}
+<section class="statistics">
+	<ul>
+		<li><b>number of feeds:</b> {{ feeds }}</li>
+		<li><b>number of documents:</b> {{ documents }}</li>
+		<li><b>number of documents today:</b> {{ today_documents }}</li>
+		<li><b>number of reports:</b> {{ reports }}</li>
+		<li><b>number of reports today:</b> {{ today_reports.count }}</li>
+	</ul>
+	{{ today_reports|statistics_report_text }}
+</section>
+{% endblock %}

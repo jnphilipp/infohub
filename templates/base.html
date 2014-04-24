@@ -20,6 +20,8 @@
 					<li{% if request.path|startswith:documents_url %} class="selected"{% endif %}><div></div><a href="{% url 'documents' %}">documents</a></li>
 					{% url 'reports' as reports_url %}
 					<li{% if request.path|startswith:reports_url %} class="selected"{% endif %}><div></div><a href="{% url 'reports' %}">reports</a></li>
+					{% url 'statistics' as statistics_url %}
+					<li{% if request.path|startswith:statistics_url %} class="selected"{% endif %}><div></div><a href="{% url 'statistics' %}">statistics</a></li>
 					<li><a href="{% url 'admin:index' %}">admin</a></li>
 				</ul>
 			</nav>

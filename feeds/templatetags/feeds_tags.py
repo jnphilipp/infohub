@@ -44,3 +44,29 @@ def report_text(report, autoescape=None):
 	s += '</table>'
 
 	return mark_safe(s)
+
+@register.filter(needs_autoescape=True)
+def statistics_report_text(reports, autoescape=None):
+	s = '<table>'
+	s += '<tr><th>feed</th><th>number of new documents today</th></tr>'
+	i = 0
+
+	daily_report = dict()
+	for report in reports:
+		for key, val in json.loads(report.text).items():
+			daily_report[key] = daily_report[key] + val if key in daily_report else val
+
+	for key, val in daily_report.items():
+		feed = ''
+		try:
+			f = Feed.objects.get(slug=key)
+			feed = '<a href="%s">%s</a>' % (reverse('feed', args=[f.slug]), f.title)
+		except Feed.DoesNotExist:
+			feed = key
+
+		s += '<tr class="%s"><td>%s</td><td style="text-align: center;">%s</td></tr>' % ('row1' if i % 2 == 0 else 'row2', feed, val)
+		i += 1
+
+	s += '</table>'
+
+	return mark_safe(s)
