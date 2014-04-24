@@ -5,7 +5,7 @@ class Command(BaseCommand):
 	help = 'Processes the documents.'
 
 	def handle(self, *args, **options):
-		for document in Document.objects.filter(state='new'):
+		for document in Document.objects.filter(feed__parser__isnull=False).filter(state='new'):
 			try:
 				document.parse()
 				document.save()

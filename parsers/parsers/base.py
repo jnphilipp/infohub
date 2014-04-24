@@ -41,7 +41,7 @@ class HTMLParser(BaseParser):
 		return response.url
 
 	def clean_unescape(self, text):
-		return unescape(re.sub(r'<[^>]+>', '', text))
+		return unescape(re.sub(r'\s\s+', ' ', re.sub(r'<[^>]+>', '', text.replace('\n', ' ')))).strip()
 
 	def get_print_link(self, text):
 		match = re.search(r'<a[^>]*href="([^"]+)"[^>]*>\s*([Dd]rucken|[Pp]rint)\s*</a>', text, re.DOTALL | re.MULTILINE)
