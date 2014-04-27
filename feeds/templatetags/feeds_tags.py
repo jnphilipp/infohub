@@ -54,7 +54,10 @@ def statistics_report_text(reports, autoescape=None):
 	daily_report = dict()
 	for report in reports:
 		for key, val in json.loads(report.text).items():
-			daily_report[key] = daily_report[key] + val if key in daily_report else val
+			try:
+				daily_report[key] = daily_report[key] + int(val) if key in daily_report else int(val)
+			except:
+				pass
 
 	for key, val in daily_report.items():
 		feed = ''

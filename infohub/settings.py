@@ -31,6 +31,14 @@ TEMPLATE_DEBUG = config.getboolean('debug','TEMPLATE_DEBUG')
 ALLOWED_HOSTS = config.get('host','ALLOWED_HOSTS').split()
 ADMINS = tuple(config.items('admins'))
 
+EMAIL_USE_TLS = config.getboolean('host_email','EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = config.get('host_email','DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = config.get('host_email','SERVER_EMAIL')
+EMAIL_HOST = config.get('host_email','EMAIL_HOST')
+EMAIL_PORT = config.getint('host_email','EMAIL_PORT')
+EMAIL_HOST_USER = config.get('host_email','EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config.get('host_email','EMAIL_HOST_PASSWORD')
+
 
 # Application definition
 INSTALLED_APPS = (
@@ -58,6 +66,7 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+
 ROOT_URLCONF = 'infohub.urls'
 WSGI_APPLICATION = 'infohub.wsgi.application'
 
@@ -81,7 +90,6 @@ TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -120,6 +128,7 @@ CRON_CLASSES = (
 	'documents.crons.ProcessDocumentsCronJob',
 	'django_cron.cron.FailedRunsNotificationCronJob',
 )
+
 
 SUIT_CONFIG = {
 	'ADMIN_NAME':'infohub',

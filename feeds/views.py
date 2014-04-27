@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from documents.models import Document
 from feeds.models import Feed, Report
 from datetime import datetime, date, time
+from pytz import utc
 
 @login_required(login_url='/admin/')
 def feeds(request):
@@ -26,8 +27,8 @@ def report(request, slug):
 
 @login_required(login_url='/admin/')
 def statistics(request):
-	today_min = datetime.combine(date.today(), time.min)
-	today_max = datetime.combine(date.today(), time.max)
+	today_min = datetime.combine(date.today(), time.min).replace(tzinfo=utc)
+	today_max = datetime.combine(date.today(), time.max).replace(tzinfo=utc)
 
 	feeds = Feed.objects.count()
 
