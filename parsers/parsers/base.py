@@ -31,7 +31,7 @@ class HTMLParser(BaseParser):
 
 	def fetch_with_data(self, url, values):
 		headers = {'User-Agent': self.user_agent}
-		data = urllib.urlencode(values)
+		data = urllib.parse.urlencode(values)
 		req = urllib.Request(url, data, headers)
 		response = urllib.reques.request.urlopen(req)
 		return response.read()
