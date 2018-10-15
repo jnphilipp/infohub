@@ -1,21 +1,40 @@
-from django.conf import settings
-from django.conf.urls import patterns, include, url
+# -*- coding: utf-8 -*-
+# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+#
+# This file is part of infohub.
+#
+# infohub is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# infohub is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with infohub.  If not, see <http://www.gnu.org/licenses/>.
+
+"""infohub URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.contrib import admin
-admin.autodiscover()
+from django.urls import path
 
-urlpatterns = patterns('',
-	url(r'^$', 'feeds.views.feeds', name='home'),
-	url(r'^feeds/$', 'feeds.views.feeds', name='feeds'),
-	url(r'^feeds/(?P<slug>[\w-]+)/$', 'feeds.views.feed', name='feed'),
-	url(r'^documents/$', 'documents.views.documents', name='documents'),
-	url(r'^documents/(?P<slug>[\w-]+)/$', 'documents.views.document', name='document'),
-	url(r'^statistics/$', 'feeds.views.statistics', name='statistics'),
-	url(r'^reports/$', 'feeds.views.reports', name='reports'),
-	url(r'^reports/(?P<slug>[\w-]+)/$', 'feeds.views.report', name='report'),
-	url(r'^admin/', include(admin.site.urls)),
-)
 
-if settings.DEBUG:
-	urlpatterns += patterns('',
-		url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-	)
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
