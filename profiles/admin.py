@@ -17,5 +17,34 @@
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from django.contrib.auth import admin as auth_admin
+from django.utils.translation import ugettext_lazy as _
 
-# Register your models here.
+from .forms import UserCreationForm
+from .models import Profile, User
+
+
+@admin.register(User)
+class UserAdmin(auth_admin.UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2')}
+        ),
+    )
+    add_form = UserCreationForm
+    exclude = ('username',)
+    fieldsets = auth_admin.UserAdmin.fieldsets
+    fieldsets[0][1]['fields'] = ('email', 'password', 'unique_visitor_id')
+    fieldsets[1][1]['fields'] = ('first_name', 'last_name')
+    list_display = ('email', 'first_name', 'last_name', 'is_active',
+                    'is_staff')
+    ordering = ('email',)
+    readonly_fields = ('unique_visitor_id',)
+    search_fields = ('email', 'first_name', 'last_name', 'unique_visitor_id')
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'updated_at')
+    ordering = ('user',)
