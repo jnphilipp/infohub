@@ -18,6 +18,7 @@
 
 import os
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -95,3 +96,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ('email',)
         verbose_name = _('User')
         verbose_name_plural = _('Users')
+
+
+class Profile(models.Model):
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at')
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Updated at')
+    )
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        models.CASCADE,
+        related_name='profile',
+        verbose_name=_('User')
+    )
+
+    def __str__(self):
+        return self.user.get_short_name()
+
+    class Meta:
+        ordering = ('user',)
+        verbose_name = _('Profile')
+        verbose_name_plural = _('Profiles')
