@@ -1,29 +1,21 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+#
+# This file is part of infohub.
+#
+# infohub is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# infohub is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with infohub.  If not, see <http://www.gnu.org/licenses/>.
+
 from django.contrib import admin
-from django.db.models import Count
-from django.forms import TextInput
-from parsers.models import Parser, TextFieldSingleLine
 
-class ParserAdmin(admin.ModelAdmin):
-	def queryset(self, request):
-		return Parser.objects.annotate(feed_count=Count('feed'))
-
-	def show_feed_count(self, inst):
-		return inst.feed_count
-
-	list_display = ('name', 'slug', 'show_feed_count')
-	list_filter = ('feed',)
-	readonly_fields = ('slug',)
-	search_fields = ('name',)
-	ordering = ('name',)
-	show_feed_count.admin_order_field = 'feed_count'
-	show_feed_count.short_description = 'Number of Feeds'
-
-	formfield_overrides = {
-		TextFieldSingleLine: {'widget': TextInput(attrs={'autocomplete':'off'})},
-	}
-
-	fieldsets = [
-		(None, {'fields': ['slug', 'name']}),
-	]
-
-admin.site.register(Parser, ParserAdmin)
+# Register your models here.

@@ -1,25 +1,21 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+#
+# This file is part of infohub.
+#
+# infohub is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# infohub is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with infohub.  If not, see <http://www.gnu.org/licenses/>.
+
 from django.db import models
-from django.template.defaultfilters import slugify
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^parsers\.models\.TextFieldSingleLine"])
 
-class TextFieldSingleLine(models.TextField):
-	pass
-
-class Parser(models.Model):
-	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
-
-	slug = models.SlugField(max_length=4096, unique=True)
-	name = TextFieldSingleLine(unique=True)
-
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.slug = slugify(self.name).replace('-', '_')
-		super(Parser, self).save(*args, **kwargs)
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		ordering = ('name',)
+# Create your models here.

@@ -59,6 +59,7 @@ EMAIL_SUBJECT_PREFIX = '[infohub] '
 # Application definition
 
 INSTALLED_APPS = [
+    'parsers',
     'profiles',
     'django.contrib.admin',
     'django.contrib.auth',
