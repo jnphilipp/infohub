@@ -1,0 +1,6 @@
+Django==2.1.2
+django-fsm==2.6.0
+feedparser==5.2.1
+piwikapi==0.3
+psycopg2-binary==2.7.5
+pytz==2018.5
