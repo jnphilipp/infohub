@@ -18,4 +18,15 @@
 
 from django.contrib import admin
 
-# Register your models here.
+from .models import Parser
+
+
+@admin.register(Parser)
+class ParserAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['slug', 'name']}),
+    ]
+    list_display = ('name', 'updated_at')
+    readonly_fields = ('slug',)
+    search_fields = ('name',)
+    ordering = ('name',)

@@ -17,5 +17,42 @@
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.db import models
+from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
+from infohub.fields import SingleLineTextField
 
-# Create your models here.
+
+class Parser(models.Model):
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at')
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Updated at')
+    )
+
+    slug = models.SlugField(
+        max_length=4096,
+        unique=True,
+        verbose_name=_('Slug')
+    )
+    name = SingleLineTextField(
+        unique=True,
+        verbose_name=_('Name')
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        else:
+            orig = Parser.objects.get(pk=self.id)
+            if orig.name != self.name:
+                self.slug = slugify(self.name)
+        super(Parser, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
