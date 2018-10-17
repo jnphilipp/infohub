@@ -60,6 +60,7 @@ EMAIL_SUBJECT_PREFIX = '[infohub] '
 
 INSTALLED_APPS = [
     'django_bootstrap4',
+    'documents',
     'feeds',
     'parsers',
     'profiles',

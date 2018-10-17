@@ -1,28 +1,21 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+#
+# This file is part of infohub.
+#
+# infohub is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# infohub is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with infohub.  If not, see <http://www.gnu.org/licenses/>.
+
 from django.contrib import admin
-from django.forms import TextInput
-from django.db import models
-from documents.models import Document, TextFieldSingleLine
-from suit.widgets import AutosizedTextarea
 
-class DocumentAdmin(admin.ModelAdmin):
-	def show_link(self, obj):
-		return '<a href="%s"><i class="icon-eye-open icon-alpha75"></i>View on site</a>' % obj.get_absolute_url()
-
-	list_display = ('url', 'title', 'updated_at', 'feed', 'show_link')
-	list_filter = ('feed', 'state')
-	readonly_fields = ('slug', 'state')
-	search_fields = ('slug', 'url', 'title', 'feed__title')
-	ordering = ('-updated_at', 'feed')
-	show_link.allow_tags = True
-	show_link.short_description = 'View on site'
-
-	formfield_overrides = {
-		TextFieldSingleLine: {'widget': TextInput(attrs={'autocomplete':'off'})},
-		models.TextField: {'widget': AutosizedTextarea(attrs={'rows': 10, 'class': 'span12'})},
-	}
-
-	fieldsets = [
-		(None, {'fields': ['slug', 'state', 'url', 'title', 'feed', 'meta', 'content', 'text']}),
-	]
-
-admin.site.register(Document, DocumentAdmin)
+# Register your models here.

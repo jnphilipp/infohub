@@ -16,6 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.shortcuts import render
+from django.apps import AppConfig
+from django.utils.translation import ugettext_lazy as _
 
-# Create your views here.
+
+class DocumentsConfig(AppConfig):
+    name = 'documents'
+    verbose_name = _('Document')
+    verbose_name_plural = _('Documents')
