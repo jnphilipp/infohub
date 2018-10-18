@@ -1,0 +1,45 @@
+{% extends "infohub/base.html" %}
+{% load bootstrap i18n infohub %}
+
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="">{% trans "Dashboard" %}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{% trans "Feeds" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="row mt-md-1">
+    <div class="col-md">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        {% trans "Title" as title_trans %}
+                        {% sortable_th column_name=title_trans o=o get_name="o" get_value="title" %}
+                        {% trans "URL" as url_trans %}
+                        {% sortable_th column_name=url_trans o=o get_name="o" get_value="url" %}
+                        {% trans "State" as state_trans %}
+                        {% sortable_th column_name=state_trans o=o get_name="o" get_value="state" %}
+                        {% trans "Type" as type_trans %}
+                        {% sortable_th column_name=type_trans o=o get_name="o" get_value="type" %}
+                        {% trans "#Documents" as nbdocuments_trans %}
+                        {% sortable_th column_name=nbdocuments_trans o=o get_name="o" get_value="nbdocuments" %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feed in feeds %}
+                        <tr>
+                            <th><a href="{% url "feeds:feed_detail" feed.slug %}">{{ feed.title|default_if_none:feed.slug }}</a></th>
+                            <td><a href="{{ feed.url }}">{{ feed.url }}</a></td>
+                            <td>{{ feed.state }}</td>
+                            <td>{{ feed.type.name }}</td>
+                            <td>{{ feed.documents.count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "infohub/base.html" %}
+{% load bootstrap i18n infohub %}
+
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a></li>
+<li class="breadcrumb-item"><a href="{% url "feeds:feed_list" %}">{% trans "Feeds" %}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ feed.title|default_if_none:feed.slug }}</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md">
+        <dl class="row">
+            <dt class="col-sm-3">{% trans "Title" %}</dt>
+            <dd class="col-sm-9">{{ feed.title }}</dd>
+            <dt class="col-sm-3">{% trans "URL" %}</dt>
+            <dd class="col-sm-9"><a href="{{ feed.url }}">{{ feed.url }}</a></dd>
+            <dt class="col-sm-3">{% trans "State" %}</dt>
+            <dd class="col-sm-9">{{ feed.state }}</dd>
+            <dt class="col-sm-3">{% trans "Type" %}</dt>
+            <dd class="col-sm-9">{{ feed.type }}</dd>
+        </dl>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md">
+        <h3 class="text-muted">#{% trans "Documents" %}</h3>
+        <hr class="text-muted">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        {% trans "Title" as title_trans %}
+                        {% sortable_th column_name=title_trans o=do get_name="do" get_value="title" %}
+                        {% trans "URL" as url_trans %}
+                        {% sortable_th column_name=url_trans o=do get_name="do" get_value="url" %}
+                        {% trans "State" as state_trans %}
+                        {% sortable_th column_name=state_trans o=do get_name="do" get_value="state" %}
+                        {% trans "Updated at" as updated_at_trans %}
+                        {% sortable_th column_name=updated_at_trans o=do get_name="do" get_value="updated_at" %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                        <tr>
+                            <th><a href="{% url "feeds:feed_document_detail" feed.slug document.hash %}">{{ document.title|default_if_none:document.hash }}</a></th>
+                            <td><a href="{{ document.url }}">{{ document.url }}</a></td>
+                            <td>{{ document.state }}</td>
+                            <td>{{ document.updated_at|date:"c" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

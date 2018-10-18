@@ -17,5 +17,26 @@
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
-# Register your models here.
+from .models import Feed, Type
+
+
+@admin.register(Type)
+class TypeAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['name']}),
+    ]
+    list_display = ('name', 'updated_at')
+    search_fields = ('name',)
+
+
+@admin.register(Feed)
+class FeedAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['slug', 'url', 'title', 'state', 'type']}),
+    ]
+    list_display = ('url', 'title', 'type', 'state')
+    list_filter = ('type', 'state')
+    readonly_fields = ('slug',)
+    search_fields = ('url', 'title')

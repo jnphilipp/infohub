@@ -16,6 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.shortcuts import render
+from django.urls import path
 
-# Create your views here.
+from .views import feed
+
+
+app_name = 'feeds'
+urlpatterns = [
+    path('feed/', feed.ListView.as_view(), name='feed_list'),
+    path('feed/<slug:slug>/', feed.DetailView.as_view(), name='feed_detail'),
+    path('feed/<slug:slug>/<slug:hash>', feed.document,
+         name='feed_document_detail'),
+]

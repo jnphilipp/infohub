@@ -46,6 +46,7 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
 
     path('admin/', admin.site.urls),
+    path('feeds/', include('feeds.urls')),
     path('profiles/', include('profiles.urls')),
 
     path('favicon.ico', RedirectView.as_view(url='/static/images/icon.png')),
