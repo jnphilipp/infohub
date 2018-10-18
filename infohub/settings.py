@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'django_bootstrap4',
     'documents',
     'feeds',
-    'parsers',
     'profiles',
     'django.contrib.admin',
     'django.contrib.auth',
