@@ -2,12 +2,14 @@
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 from infohub.decorators import piwik
-from profiles.forms import AuthenticationForm, UserCreationForm
-from profiles.models import Profile
+
+from .forms import AuthenticationForm, UserChangeForm, UserCreationForm
+from .models import Profile
 
 
 @csrf_protect
@@ -60,3 +62,19 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', locals())
+
+
+@csrf_protect
+@login_required
+@piwik('Profile • StockAnalyzer')
+def profile(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    if request.method == 'POST':
+        form = UserChangeForm(instance=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request,
+                             _('Your profile has been successfully updated.'))
+    else:
+        form = UserChangeForm(instance=request.user)
+    return render(request, 'profiles/profile_detail.html', locals())
