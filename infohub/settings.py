@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django_bootstrap4',
     'documents',
     'feeds',
+    'infohub',
     'profiles',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -178,6 +179,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Piwik
 
 PIWIK = {}
+
+
+# RUN ONLY ONE COMMAND AT A TIME
+
+RUN_ONCE_FILE_HANDLE = 0
 
 
 # Load local settings

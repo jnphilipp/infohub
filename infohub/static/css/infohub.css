@@ -1,0 +1,10 @@
+body {font-family: monospace;
+    font-size: 10pt;
+    font-weight: normal;
+    padding-top: 70px;}
+
+.ui-autocomplete {
+    position: absolute;
+    cursor: default;
+    z-index: 1050 !important;
+}

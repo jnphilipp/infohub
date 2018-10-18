@@ -16,4 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-default_app_config = 'infohub.apps.InfohubConfig'
+from django.template import Library
+register = Library()
+
+from .base import *
+from .gravatar import *

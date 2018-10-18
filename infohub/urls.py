@@ -31,10 +31,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic.base import RedirectView
+
+from . import views
+
+admin.site.site_header = _('infohub administration')
 
 
 urlpatterns = [
+    path('', views.dashboard, name='dashboard'),
+
     path('admin/', admin.site.urls),
+
+    path('favicon.ico', RedirectView.as_view(url='/static/images/icon.png')),
 ]

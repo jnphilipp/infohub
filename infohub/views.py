@@ -16,4 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-default_app_config = 'infohub.apps.InfohubConfig'
+from django.shortcuts import render
+from infohub.decorators import piwik
+
+
+@piwik('Dashboard • infohub')
+def dashboard(request):
+    return render(request, 'infohub/dashboard.html', locals())
