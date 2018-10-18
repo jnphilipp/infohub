@@ -156,7 +156,7 @@ USE_TZ = True
 # Login
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/profile/signin/'
+LOGIN_URL = '/profiles/signin/'
 
 
 # Static files (CSS, JavaScript, Images)

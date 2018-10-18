@@ -17,7 +17,30 @@
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib.auth import forms, get_user_model
+from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
+
+class AuthenticationForm(forms.AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['password'].help_text = mark_safe(
+            '<a href="%s">%s</a>' % (
+                reverse('profiles:password_reset'),
+                _('Forgot your password?')
+            )
+        )
+
+class UserChangeForm(forms.UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['password']. \
+            help_text = mark_safe(self.fields['password'].help_text)
+
+    class Meta(forms.UserChangeForm.Meta):
+        model = get_user_model()
+        fields = ('email', 'password', 'first_name', 'last_name')
 
 
 class UserCreationForm(forms.UserCreationForm):

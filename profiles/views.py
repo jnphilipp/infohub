@@ -1,21 +1,62 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
-#
-# This file is part of infohub.
-#
-# infohub is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# infohub is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
+from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_protect
+from infohub.decorators import piwik
+from profiles.forms import AuthenticationForm, UserCreationForm
+from profiles.models import Profile
 
-# Create your views here.
+
+@csrf_protect
+@piwik('Sign in • Profile • infohub')
+def signin(request):
+    gnext = request.GET.get('next')
+
+    if request.user.is_authenticated:
+        return redirect(gnext) if gnext else redirect('dashboard')
+
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.add_message(request, messages.SUCCESS,
+                                         _('You have successfully signed in.'))
+
+                    return redirect(gnext) if gnext else redirect('dashboard')
+                else:
+                    messages.add_message(request, messages.ERROR,
+                                         _('Your account is disabled.'))
+                return redirect(request.META.get('HTTP_REFERER'))
+        messages.add_message(request, messages.ERROR,
+                             _('Please enter a correct email and password to' +
+                               ' sign in. Note that both fields may be ' +
+                               'case-sensitive.'))
+    else:
+        form = AuthenticationForm(request)
+    return render(request, 'registration/signin.html', locals())
+
+
+@csrf_protect
+@piwik('Sign up • Profile • infohub')
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            Profile.objects.create(user=new_user)
+            messages.info(request, messages.SUCCESS,
+                          _('Thanks for signing up. You are now logged in.'))
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'])
+            login(request, new_user)
+            return redirect('profiles:profile')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', locals())
