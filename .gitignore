@@ -1,5 +1,6 @@
 *.pyc
-infohub/settings.ini
+local.py
 media/*
 static/*
-venv/*
+.venv/*
+__pycache__
