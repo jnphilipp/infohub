@@ -106,13 +106,14 @@ class Feed(models.Model):
                 self.save()
 
             for entry in rssfeed.entries:
-                if not Document.objects.filter(url=entry.link).exists():
+                url = re.sub(r'#[^#]+$', '', entry.link)
+                if not Document.objects.filter(url=url).exists():
                     title = re.sub(r'\s\s+', ' ',
                                    entry.title.replace('\n', ' '))
-                    text = requests.get(entry.link).text
-                    Document.objects.create(url=entry.link, title=title,
-                                            content_object=self, meta=entry,
-                                            text=text).hash
+                    text = requests.get(url).text
+                    Document.objects.create(text=text, title=title, url=url,
+                                            meta={'source': entry},
+                                            content_object=self).hash
 
     def get_absolute_url(self):
         return reverse('feeds:feed_detail', args=[self.slug])

@@ -30,6 +30,7 @@ from ..models import Feed
 class ListView(generic.ListView):
     context_object_name = 'feeds'
     model = Feed
+    paginate_by = 100
 
     def get_ordering(self):
         self.order = self.request.GET.get('o', 'url')
@@ -48,7 +49,8 @@ class DetailView(generic.DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(DetailView, self).get_context_data(*args, **kwargs)
         context['do'] = self.request.GET.get('do', '-updated_at')
-        context['documents'] = context['feed'].documents.order_by(context['do'])
+        context['documents'] = context['feed'].documents. \
+            order_by(context['do'])
         return context
 
 

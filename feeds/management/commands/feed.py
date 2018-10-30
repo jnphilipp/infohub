@@ -31,9 +31,20 @@ class Command(SingleInstanceCommand):
 
     def handle(self, *args, **options):
         self._run_once()
-        for feed in Feed.objects.filter(state=options['state']):
+
+        if options['feeds']:
+            feeds = Feed.objects.filter(Q(slug__in=options['feeds']) |
+                                        Q(url__in=options['feeds']) |
+                                        Q(title__in=options['feeds']))
+        else:
+            feeds = Feed.objects.filter(state=options['state'])
+
+        for feed in feeds:
             try:
+                nb = feed.documents.count()
                 feed.update()
+                nb = feed.documents.count() - nb
+                self._success('* %s: %+d' % (feed, nb))
             except Exception as e:
-                self._error('Update failed [%s]: %s' % (feed, e))
+                self._error('* %s: %s' % (feed, e))
             feed.save()

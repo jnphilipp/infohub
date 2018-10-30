@@ -24,9 +24,17 @@
     <dd class="col-sm-9">{{ document.state }}</dd>
     <dt class="col-sm-3">{% trans "Hash" %}</dt>
     <dd class="col-sm-9">{{ document.hash }}</dd>
-    <dt class="col-sm-3">{% trans "Meta" %}</dt>
-    <dd class="col-sm-9"><pre>{{ meta_formatted }}</pre></dd>
+    <dt class="col-sm-3">{% trans "Related" %}</dt>
+        <dd class="col-sm-9">
+            <ul>
+                {% for doc in document.related.all %}
+                    <li><a href="{% url "documents:document_detail" doc.hash %}">{{ doc.title|default_if_none:doc.hash }}</a></li>
+                {% endfor %}
+            </ul>
+        </dd>
     {% if request.user.is_staff %}
+        <dt class="col-sm-3">{% trans "Meta" %}</dt>
+        <dd class="col-sm-9"><pre>{{ meta_formatted }}</pre></dd>
         <dt class="col-sm-3">{% trans "Text" %}</dt>
         <dd class="col-sm-9">{{ document.text }}</dd>
     {% endif %}

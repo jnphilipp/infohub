@@ -24,6 +24,7 @@ from .views import feed
 app_name = 'feeds'
 urlpatterns = [
     path('feed/', feed.ListView.as_view(), name='feed_list'),
+    path('feed/<int:page>/', feed.ListView.as_view()),
     path('feed/<slug:slug>/', feed.DetailView.as_view(), name='feed_detail'),
     path('feed/<slug:slug>/<slug:hash>', feed.document,
          name='feed_document_detail'),

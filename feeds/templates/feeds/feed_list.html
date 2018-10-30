@@ -40,6 +40,9 @@
                 </tbody>
             </table>
         </div>
+        {% trans "Feeds" as pagination_title %}
+        {% url "feeds:feed_list" as base_path %}
+        {% pagination paginator page_obj base_path pagination_title o=o %}
     </div>
 </div>
 {% endblock %}
