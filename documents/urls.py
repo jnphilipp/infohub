@@ -16,11 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.apps import AppConfig
-from django.utils.translation import ugettext_lazy as _
+from django.urls import path
+
+from .views import document
 
 
-class ParsersConfig(AppConfig):
-    name = 'parsers'
-    verbose_name = _('Parser')
-    verbose_name_plural = _('Parsers')
+app_name = 'documents'
+urlpatterns = [
+    path('document/', document.ListView.as_view(), name='document_list'),
+    path('document/<int:page>/', document.ListView.as_view()),
+    path('document/<slug:hash>/', document.DetailView.as_view(),
+         name='document_detail'),
+]

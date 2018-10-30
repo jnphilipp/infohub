@@ -17,5 +17,20 @@
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
-# Register your models here.
+from .models import Document
+
+
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['hash', 'url', 'title', 'state', 'content_type',
+                           'object_id']}),
+        (_('Content'), {'fields': ['meta', 'text', 'related']}),
+    ]
+    filter_horizontal = ('related',)
+    list_display = ('hash', 'url', 'title', 'state', 'updated_at')
+    list_filter = ('state', 'content_type', 'object_id')
+    readonly_fields = ('hash', 'state')
+    search_fields = ('name',)

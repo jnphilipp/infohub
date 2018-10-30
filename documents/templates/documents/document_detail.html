@@ -1,0 +1,43 @@
+{% extends "infohub/base.html" %}
+{% load bootstrap i18n infohub %}
+
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a></li>
+<li class="breadcrumb-item"><a href="{% url "documents:document_list" %}">{% trans "Documents" %}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ document.title|default_if_none:document.hash }}</li>
+{% endblock %}
+
+
+{% block content %}
+<dl class="row">
+    <dt class="col-sm-3">{% trans "Created at" %}</dt>
+    <dd class="col-sm-9">{{ document.created_at|date:"c" }}</dd>
+    <dt class="col-sm-3">{% trans "Updated at" %}</dt>
+    <dd class="col-sm-9">{{ document.updated_at|date:"c" }}</dd>
+    <dt class="col-sm-3">{% trans "Title" %}</dt>
+    <dd class="col-sm-9">{{ document.title }}</dd>
+    <dt class="col-sm-3">{% trans "URL" %}</dt>
+    <dd class="col-sm-9"><a href="{{ document.url }}">{{ document.url }}</a></dd>
+    <dt class="col-sm-3">{% trans "State" %}</dt>
+    <dd class="col-sm-9">{{ document.state }}</dd>
+    <dt class="col-sm-3">{% trans "Content object" %}</dt>
+    <dd class="col-sm-9"><a href="{{ document.content_object.get_absolute_url }}">{{ document.content_object }} [{{ document.content_type.model }}]</a></dd>
+    <dt class="col-sm-3">{% trans "Hash" %}</dt>
+    <dd class="col-sm-9">{{ document.hash }}</dd>
+    <dt class="col-sm-3">{% trans "Related" %}</dt>
+    <dd class="col-sm-9">
+        <ul>
+            {% for doc in document.related.all %}
+                <li><a href="{% url "documents:document_detail" doc.hash %}">{{ doc.title|default_if_none:doc.hash }}</a></li>
+            {% endfor %}
+        </ul>
+    </dd>
+    {% if request.user.is_staff %}
+        <dt class="col-sm-3">{% trans "Meta" %}</dt>
+        <dd class="col-sm-9"><pre>{{ meta_formatted }}</pre></dd>
+        <dt class="col-sm-3">{% trans "Text" %}</dt>
+        <dd class="col-sm-9">{{ document.text }}</dd>
+    {% endif %}
+</dl>
+{% endblock %}

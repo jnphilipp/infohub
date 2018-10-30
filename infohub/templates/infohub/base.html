@@ -60,6 +60,13 @@
                         </a>
                     </li>
                     {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            {% url "documents:document_list" as document_list_url %}
+                            <a class="nav-link{% if request.path|startswith:document_list_url %} active{% endif %}" href="{{ document_list_url }}">
+                                {% trans "Documents" %}
+                                {% if request.path|startswith:document_list_url %}<span class="sr-only">(current)</span>{% endif %}
+                            </a>
+                        </li>
                     {% else %}
                     {% endif %}
                 </ul>
@@ -89,17 +96,6 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url "admin:index" %}">{% trans "Admin" %}</a>
                                 {% endif %}
-                                <div class="dropdown-divider"></div>
-                                {% url "dashboard" as legal_notice_url %}
-                                <a class="dropdown-item{% if request.path|startswith:legal_notice_url %} active{% endif %}" href="{{ legal_notice_url }}">
-                                    {% trans "Legal notice" %}
-                                    {% if request.path|startswith:legal_notice_url %}<span class="sr-only">(current)</span>{% endif %}
-                                </a>
-                                {% url "dashboard" as privacy_policy_url %}
-                                <a class="dropdown-item{% if request.path|startswith:privacy_policy_url %} active{% endif %}" href="{{ privacy_policy_url }}">
-                                    {% trans "Privacy policy" %}
-                                    {% if request.path|startswith:privacy_policy_url %}<span class="sr-only">(current)</span>{% endif %}
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url "profiles:signout" %}">{% trans "Sign out" %}</a>
                             </ul>

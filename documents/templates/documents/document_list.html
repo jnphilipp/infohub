@@ -1,0 +1,45 @@
+{% extends "infohub/base.html" %}
+{% load bootstrap i18n infohub %}
+
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="">{% trans "Dashboard" %}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{% trans "Documents" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="row mt-md-1">
+    <div class="col-md">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        {% trans "Title" as title_trans %}
+                        {% sortable_th column_name=title_trans o=o get_name="o" get_value="title" %}
+                        {% trans "URL" as url_trans %}
+                        {% sortable_th column_name=url_trans o=o get_name="o" get_value="url" %}
+                        {% trans "State" as state_trans %}
+                        {% sortable_th column_name=state_trans o=o get_name="o" get_value="state" %}
+                        {% trans "Updated_at" as updated_at_trans %}
+                        {% sortable_th column_name=updated_at_trans o=o get_name="o" get_value="updated_at" %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                        <tr>
+                            <th><a href="{% url "documents:document_detail" document.hash %}">{{ document.title|default_if_none:document.hash }}</a></th>
+                            <td><a href="{{ document.url }}">{{ document.url }}</a></td>
+                            <td>{{ document.state }}</td>
+                            <td>{{ document.updated_at|date:"c" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% trans "Documents" as pagination_title %}
+        {% url "documents:document_list" as base_path %}
+        {% pagination paginator page_obj base_path pagination_title o=o %}
+    </div>
+</div>
+{% endblock %}

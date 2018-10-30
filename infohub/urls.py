@@ -46,6 +46,7 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
 
     path('admin/', admin.site.urls),
+    path('documents/', include('documents.urls')),
     path('feeds/', include('feeds.urls')),
     path('profiles/', include('profiles.urls')),
 
