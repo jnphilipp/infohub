@@ -3,13 +3,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from infohub.decorators import piwik
 
 from .forms import AuthenticationForm, UserChangeForm, UserCreationForm
-from .models import Profile
+from .models import User
 
 
 @csrf_protect
@@ -52,7 +54,6 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            Profile.objects.create(user=new_user)
             messages.info(request, messages.SUCCESS,
                           _('Thanks for signing up. You are now logged in.'))
             new_user = authenticate(username=form.cleaned_data['username'],
@@ -64,17 +65,15 @@ def signup(request):
     return render(request, 'registration/signup.html', locals())
 
 
-@csrf_protect
-@login_required
-@piwik('Profile • StockAnalyzer')
-def profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    if request.method == 'POST':
-        form = UserChangeForm(instance=request.user, data=request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request,
-                             _('Your profile has been successfully updated.'))
-    else:
-        form = UserChangeForm(instance=request.user)
-    return render(request, 'profiles/profile_detail.html', locals())
+@method_decorator(login_required, name='dispatch')
+@method_decorator(piwik('Profile • infohub'), name='dispatch')
+class UpdateView(generic.edit.UpdateView):
+    model = User
+    form_class = UserChangeForm
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        from django.urls import reverse
+        return reverse('profiles:profile')

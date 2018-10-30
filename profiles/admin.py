@@ -21,7 +21,7 @@ from django.contrib.auth import admin as auth_admin
 from django.utils.translation import ugettext_lazy as _
 
 from .forms import UserCreationForm
-from .models import Profile, User
+from .models import User
 
 
 @admin.register(User)
@@ -42,9 +42,3 @@ class UserAdmin(auth_admin.UserAdmin):
     ordering = ('email',)
     readonly_fields = ('unique_visitor_id',)
     search_fields = ('email', 'first_name', 'last_name', 'unique_visitor_id')
-
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'updated_at')
-    ordering = ('user',)
