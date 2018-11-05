@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.core.mail import mail_admins
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from documents.models import Document
@@ -41,10 +42,15 @@ class Command(SingleInstanceCommand):
         else:
             documents = Document.objects.filter(state=options['state'])
 
+        msg = ''
         for document in documents:
             try:
                 document.extract_links()
                 self._success('* %s: %s' % (document, document.state))
             except Exception as e:
                 self._error('%s: %s' % (document, e))
+                msg += '%s: %s' % (document, e)
             document.save()
+
+        if msg:
+            mail_admins('Feed failed', msg)

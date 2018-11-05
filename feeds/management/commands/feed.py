@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with infohub.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.core.mail import mail_admins
 from django.core.management.base import BaseCommand
 from feeds.models import Feed
 from infohub.management.base import SingleInstanceCommand
@@ -39,6 +40,7 @@ class Command(SingleInstanceCommand):
         else:
             feeds = Feed.objects.filter(state=options['state'])
 
+        msg = ''
         for feed in feeds:
             try:
                 nb = feed.documents.count()
@@ -47,4 +49,8 @@ class Command(SingleInstanceCommand):
                 self._success('* %s: %+d' % (feed, nb))
             except Exception as e:
                 self._error('* %s: %s' % (feed, e))
+                msg += '* %s: %s' % (feed, e)
             feed.save()
+
+        if msg:
+            mail_admins('Feed failed', msg)
